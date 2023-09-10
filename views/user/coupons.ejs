@@ -1,0 +1,24 @@
+<%- include('userHeader')%>
+
+<div class="container">
+    <div class="row">
+        <% couponList.forEach((coupon) => { %>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= coupon.couponName %></h5>
+                        <p class="card-text">Get <%= coupon.couponDiscount %>% when you buy for <%= coupon.couponMinAmount %></p>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+
+
+
+
+
+
+<%- include('userFooter')%>

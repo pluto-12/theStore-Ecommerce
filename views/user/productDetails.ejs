@@ -1,0 +1,168 @@
+<%- include('userHeader') %>
+
+<link rel="stylesheet" href="/static/productdetails.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+
+
+
+<div class="container mt-5 mb-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="images p-3">
+                            <div class="text-center p-4" id="image-div" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;border-radius: 8px; width: 350px; height: 400px;"> 
+                            <!-- <div class="card-container" id="image-div"> -->
+                                <img id="main-image" src="/assets/productImages/<%=productdetails[0].productImages[0]%>" width="250" /> 
+                            </div>
+                            <div class="thumbnail text-center">
+                                <% for(let i =0; i<productdetails[0].productImages.length; i++) { %>
+                                    <img onclick="change_image(this)" src="/assets/productImages/<%=productdetails[0].productImages[i]%>" width="60px"  style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; margin-left: 10px; margin-top: 5px;"> 
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="product p-4" style="height: 100%;">
+                            <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand"><%=productdetails[0].productCategory %></span>
+                                <h5 class="text-uppercase"><%=productdetails[0].productName %></h5>
+                                <h6 class="card-text text-success"> <%= productdetails[0].productStock? "IN STOCK" : "OUT OF STOCK" %></h6>
+                                <div class="price d-flex flex-row align-items-center">
+                                     <span class="act-price">
+                                        <span>&#8377;</span><%=productdetails[0].productPrice %>
+                                    </span>
+                                    <!-- <div class="ml-2"> <small class="dis-price">$59</small> <span>40% OFF</span> </div> -->
+                                </div>
+                            </div>
+                            <p class="about"><%=productdetails[0].productDescription %></p>
+                            <%if(locals.user) {%>
+                                <div class="cart align-items-center" style="margin-top: 50px;"> 
+                                    <!-- <a class="btn btn-primary text-uppercase mr-2 px-4">Add to cart</a>  -->
+                                    <button class="btn btn-primary text-uppercase mr-2 px-4" id="cartButton" onclick="addtoCart('<%= productdetails[0]._id %>')">Add to Cart</button>
+                                    <!-- <a class="btn btn-primary text-uppercase mr-2 px-4">Buy Now</a> -->
+                                    <button class="btn btn-outline-light" id="wishlistButton" onclick="addtowishlist('<%= productdetails[0]._id %>')">
+                                        <i class="fas fa-heart text-muted"></i> 
+                                    </button> 
+                                </div>
+                            <%} else {%>
+                                <div class="badge bg-primary text-wrap" style="width: 6rem;">
+                                    <a href="/login" class="btn btn-primary"> Login to Buy</a>
+                                </div>
+                            <%}%>
+                            <div class="toast-container position-fixed top-0 end-0 p-3">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Review Cards -->
+    <div class="row d-flex justify-content-center mt-4">
+        <div class="col-md-10">
+            <h3>Reviews and Ratings</h3>
+            
+            <!-- Loop through each review and rating -->
+            <%rating.forEach((review) => {%>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <!-- Display review content -->
+                        <p><%= review.review %></p>
+                        <!-- Display rating -->
+                        <p>Rating: <%= review.rating %> out of 5</p>
+                    </div>
+                </div>
+            <%})%>
+            
+            <!-- If no reviews are available, you can display a message -->
+            <% if (rating.length === 0) { %>
+            <p>No reviews available for this product.</p>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+
+<%- include('userFooter') %>
+
+<script>
+
+function showToast(message, type) {
+    const toastContainer = document.querySelector('.toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast bg-${type} text-black`;
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+
+    const toastBody = document.createElement('div');
+    toastBody.className = 'toast-body';
+    toastBody.textContent = message;
+
+    toast.appendChild(toastBody);
+    toastContainer.appendChild(toast);
+
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+}
+
+
+function addtoCart (id) {
+    // console.log(id);
+    $.ajax ({
+        url: '/addtocart?id='+id,
+        type: 'post',
+        // data: JSON.stringify(id),
+        data: id,
+        contentType: 'text/plain',
+        // contentType: 'application/json',
+        success: (data) => {
+            showToast('Item added to Cart', 'Success')
+            console.log("added to cart");
+        },
+        error: (xhr, status, error) => {
+            console.error(error);
+        }
+    })
+}
+
+function addtowishlist (id) {
+    $.ajax ({
+        url: 'addtowishList?id='+id,
+        type: 'get',
+        contentType: 'text/plain',
+        success: (data) => {
+            showToast('Item added to Wishlist', 'Success')
+            console.log('added to wishList');
+        },
+        error: (xhr, status, error) => {
+            console.error(error);
+        }
+    })
+}
+
+var options = {
+    width: 300,
+    zoomWidth: 300,
+    offset: {vertical: 100, horizontal: 100}
+}
+new ImageZoom(document.getElementById('image-div'), options) 
+
+
+
+function change_image(image){
+    var container = document.getElementById("main-image");
+    container.src = image.src;
+}
+document.addEventListener("DOMContentLoaded", function(event) {
+});
+</script>

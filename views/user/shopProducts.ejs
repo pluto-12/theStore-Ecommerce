@@ -1,0 +1,143 @@
+<%- include('userHeader') %>
+
+<link rel="stylesheet" href="/static/shopProducts.css">
+
+
+
+<h5 class="text-dark mt-3" style="padding-left: 50px;font-weight: 700;font-size: 29px;">PRODUCTS</h5>
+<!-- <h3 class=" my-4"></h3> -->
+
+<hr class="mx-n3" style="margin-top: 50px;">
+
+
+<div class="container">
+    <div class="row">
+      <!-- Sidebar with categories -->
+      <div class="col-lg-3">
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-light">
+          <div class="position-sticky">
+            <div class="mt-4 mx-3">
+              <span><strong>Filter</strong></span>
+              <!-- Category Dropdown -->
+              <div class="mb-3">
+                <label for="categoryFilter" class="form-label">Category:</label>
+                <select class="form-select" id="categoryFilter">
+                  <option value="all">All Categories</option>
+                  <% categories.forEach((category) => { %>
+                  <option value="<%=category.categoryName%>"><%=category.categoryName%></option>
+                  <% }) %>
+                </select>
+              </div>
+              <!-- Sort Options -->
+              <div class="mb-3">
+                <label for="sortFilter" class="form-label">Sort By:</label>
+                <select class="form-select" id="sortFilter">
+                  <option value="-1">Price: High to Low</option>
+                  <option value="1">Price: Low to High</option>
+                </select>
+              </div>
+              <!-- Apply Filter Button -->
+              <button type="button" class="btn btn-primary" onclick="filter()" id="applyFilterBtn">Apply Filter</button>
+            </div>
+          </div>
+        </nav>
+      </div>
+  
+      <!-- Product cards -->
+      <div class="col-lg-9">
+        <div class="row">
+          <% products.forEach((product) => { %>
+          <div class="col-md-4 mb-4">
+            <a href="/productdetails?id=<%=product._id %>">
+                <div class="card">
+                    <img src="/assets/productImages/<%=product.productImages[0] %>" class="card-img-top" alt="<%= product.productName %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= product.productName %></h5>
+                        <p class="card-text"><span>&#8377;</span><%=product.productPrice%></p>
+                    </div>
+                </div>
+            </a>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="align-items-center">
+    <nav aria-label="Page navigation example" style="width: 30%; margin: auto;">
+      <ul class="pagination">
+        <li class="page-item">
+          <%if(locals.active) { %>
+            <a class="page-link" href="/products?category=<%=active%>&page=<%= Math.max(1, page - 1) %>&pagesize=<%= limit %>" aria-label="Previous"></a>
+          <%} else { %>
+            <a class="page-link" href="/products?page=<%= Math.max(1, page - 1) %>&pagesize=<%= limit %>" aria-label="Previous">
+          <%}%>
+          
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <% for(let i = 1; i <= countpages; i++) { %>
+          <li class="page-item <%= i === page ? 'active' : '' %>">
+            <%if(locals.active) {%>
+              <a class="page-link" href="/products?category=<%=active %>&page=<%= i %>&pagesize=<%= limit %>"><%= i %></a>
+            <%} else {%>
+              <a class="page-link" href="/products?page=<%= i %>&pagesize=<%= limit %>"><%= i %></a>
+            <%}%>
+            
+          </li>
+        <% } %> 
+         <li class="page-item">
+          <%if(locals.active) {%>
+            <a class="page-link" href="/products?category=<%=active%>&page=<%= Math.min(countpages+1, page + 1) %>&pagesize=<%= limit %>" aria-label="Next"></a>
+          <%} else {%>
+            <a class="page-link" href="/products?page=<%=Math.min(countpages+1, page + 1) %>&pagesize=<%= limit %>" aria-label="Next"></a>
+          <%}%>
+          
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
+
+
+<%- include('userFooter') %>
+
+<!-- <script>
+  // Get the filter elements
+  const categoryFilter = document.getElementById('categoryFilter');
+  const sortFilter = document.getElementById('sortFilter');
+  const applyFilterBtn = document.getElementById('applyFilterBtn');
+  const productCards = document.getElementById('productCards');
+
+  // Add event listener to the Apply Filter button
+  applyFilterBtn.addEventListener('click', () => {
+    // Get the selected values from the filters
+    const selectedCategory = categoryFilter.value;
+    const selectedSort = sortFilter.value;
+
+    // Create the URL based on the selected filters
+    let url = '/productsfilter';
+
+    if (selectedCategory) {
+      url += `?category=${selectedCategory}`;
+    }
+
+    if (selectedSort) {
+      url += `&sort=${selectedSort}`;
+    }
+
+    // Redirect to the filtered URL
+    window.location.href = url;
+  });
+</script> -->
+
+
+
+
+
+

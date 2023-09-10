@@ -1,0 +1,148 @@
+<%- include('adminHeader')%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<section style="background-color: #f8f9fa">
+  <div class="container">
+    <div
+      class="row d-flex justify-content-center align-items-center h-100"
+      style="margin-top: 25px"
+    >
+      <div class="col-xl-9">
+        <h1 class="text mb-4">Edit Product</h1>
+        <div class="card" style="border-radius: 15px">
+          <% if (locals.message) { %>
+          <div class="alert alert-danger">
+            <strong><%= message %> </strong>
+          </div>
+          <% } %>
+          <form
+            action="/admin/updateproduct"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <div class="card-body">
+              <!-- <hr class="mx-n3"> -->
+              <div class="col-md-9 pe-5">
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  name="productId"
+                  value="<%= data._id %>"
+                  hidden
+                />
+              <div class="row align-items-center py-3">
+                <div class="col-md-3 ps-5">
+                  <h6 class="mb-0">Product Name</h6>
+                </div>
+                <div class="col-md-9 pe-5">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    name="productName"
+                    value="<%= data.productName%>"
+                  />
+                </div>
+              </div>
+              <hr class="mx-n3" />
+              <div class="row align-items-center py-3">
+                <div class="col-md-3 ps-5">
+                  <h6 class="mb-0">Price</h6>
+                </div>
+                <div class="col-md-9 pe-5">
+                    <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    name="productPrice"
+                    value="<%= data.productPrice%>"
+                  />
+                </div>
+              </div>
+              <hr class="mx-n3" />
+              <div class="row align-items-center py-3">
+                <div class="col-md-3 ps-5">
+                  <h6 class="mb-0">Stock</h6>
+                </div>
+                <div class="col-md-9 pe-5">
+                    <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    name="productStock"
+                    value="<%= data.productStock%>"
+                  />
+                </div>
+              </div>
+              <hr class="mx-n3" />
+              <div class="row align-items-center py-3">
+                <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">Category</h6>
+                </div>
+                <div class="col-md-9 pe-5">
+                    <select class="form-select" name="productCategory" id="productCategory">
+                        <option selected value="<%= data.productCategory%>"><%= data.productCategory %></option>
+                        <% categoryList.forEach((category) => { %>
+                            <option value="<%= category.categoryName%>"><%= category.categoryName%></option>
+                        <% }) %>
+                    </select>
+                </div>
+              </div>
+              <hr class="mx-n3" />
+              <div class="row align-items-center py-3">
+                <div class="col-md-3 ps-5">
+                  <h6 class="mb-0">Description</h6>
+                </div>
+                <div class="col-md-9 pe-5">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    name="productDescription"
+                   >
+                   <%= data.productDescription%>
+                    </textarea>
+                </div>
+              </div>
+              <hr class="mx-n3">
+              <div class="row align-items-center py-3">
+                <div class="col-md-3 ps-5">
+                  <div class="row" style="width: 443px;" >
+                    <% for(let i=0; i<data.productImages.length; i++) { %>
+                      <div class="col-md-4 mb-4">
+                        <div class="card mb-4 justify-content-center d-flex">
+                          <img src=" /assets/productImages/<%=data.productImages[i]%>" class="card-img-top align-self-center pt-2" alt="image" style="width: 100px; margin: 20px;">
+                          <a href="/admin/deleteimage?id=<%=data._id %>&image=<%=data.productImages[i]%>" class="btn btn-outline-primary" style="margin-top: 10px; margin: auto;"><i class="fa fa-remove" style="font-size:20px"></i></a>
+                        </div>
+                      </div>
+                    <%}%>
+                  </div>
+                </div>
+              </div>
+              <hr class="mx-n3" />
+              <div style="display: flex">
+                <div class="col-md-3 ps-5" style="flex: 1">
+                  <h6 class="mb-0">Product Images</h6>
+                </div>
+                <div style="flex: 1">
+                  <input
+                    class="form-control"
+                    name="file"
+                    type="file"
+                    id="formFileMultiple"
+                    multiple
+                  />
+                </div>
+              </div>
+              <hr class="mx-n3" />
+              <div class="px-5 py-4 text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a
+                  class="btn btn-outline-primary"
+                  href="/admin/productmanagement"
+                  >Back</a
+                >
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

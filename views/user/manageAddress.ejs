@@ -1,0 +1,36 @@
+<%- include('userHeader') %>
+
+<link rel="stylesheet" href="/static/manageAddress.css">
+<%- include ('userSidebar') %>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <!-- Your main content goes here -->
+    <!-- <h1>Welcome to your dashboard!</h1> -->
+    <div class="container mt-5">
+        <h1>Address Management</h1>
+        <div class="row">
+            <div class="col-md-6 col-lg-4">
+                <div class="add-address-card justify-content-center align-items-center">
+                    <a href="/addaddress"><span class="material-icons-outlined">add</span></a>
+                    <p>Add New Address</p>
+                </div>
+            </div>
+            <%if(locals.addressList) { %>
+                <% addressList.forEach((address) => { %>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="address-card">
+                            <h3><%= address.fullName %></h3>
+                            <p><%= address.mobile %></p>
+                            <p><%= address.houseNumber %></p>
+                            <p><%= address.area %> <%= address.city %></p>
+                            <p><%= address.state %> <%= address.pinCode %></p>
+                            <a class="btn btn-primary" href="/editaddress?id=<%=address._id%>">Edit</a>
+                            <a class="btn btn-danger" href="/deleteaddress?id=<%=address._id%>">Delete</a>
+                        </div>
+                    </div>
+                <% }) %>
+            <%}%>
+        </div>
+</main>
+
+<%- include('userFooter') %>

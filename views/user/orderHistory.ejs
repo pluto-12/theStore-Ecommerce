@@ -1,0 +1,215 @@
+<%- include('userHeader') %>
+<%- include ('userSidebar') %>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+    .gradient-custom {
+        /* fallback for old browsers */
+        background: #f8f9fa;
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: #f8f9fa;
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: #f8f9fa
+    }
+</style>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <section class="h-100 gradient-custom">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center my-4">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <% if(locals.activeOrders) { %>
+                            <h5 class="mb-0 text">Order History</h5>
+                        <%} else { %>
+                            <h5 class="mb-0 text-danger"> No Orders</h5>
+                        <% } %>
+                    </div>
+                    <% if(locals.activeOrders) { %>
+                        <% activeOrders.forEach((order) =>{ %>
+                            <div class="card m-4">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="row">
+                                            <!-- <div class="col-md-3">
+                                                <p>Order Placed On:</p>
+                                                <p><%= order.dateOfPurchase %></p>
+                                            </div> -->
+                                            <div class="col-md-3">
+                                                <p>Delivered On:</p>
+                                                <p><%= order.dateOfDelivery %></p>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <p>Status:</p>
+                                                <p><%= order.orderStatus %></p>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <p>Price:</p>
+                                                <p><span>&#8377;</span><%= order.totalAmount %></p>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <p>Order ID:</p>
+                                                <p><%= order.orderId %></p>
+                                            </div>
+                                            <div class="col-md-3 ml-4">
+                                                <button class="btn btn-outline-info" type="button" data-bs-toggle="modal" data-bs-target = "#orderModal">More Details</button>
+                                            </div>
+                                            <% if(order.orderStatus == "Delivered" && (new Date() - order.dateOfDelivery) / (1000 * 60 * 60 * 24) <= 10) {%>
+                                                <div class="col-md-3 ml-4">
+                                                    <a class="btn btn-outline-danger" href="/returnitem?orderId=<%=order._id%>">Return Order</a>
+                                                </div>
+                                            <%}%>
+                                            <% if(order.orderStatus == "Delivered") {%>
+                                                <div class="col-md-3 ml-4">
+                                                    <!-- <a class="btn btn-outline-info" href="/purchaseinvoice?orderId=">Download Invoice</a> -->
+                                                    <button class=" btn btn-outline-info" onclick="generateInvoice('<%=order._id%>')">Download Invoice</button>
+                                                </div>
+                                            <%}%>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <% order.purchaseItems.forEach ((item) => { %>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                                                <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                                                    <img src="/assets/productImages/<%=item.itemImage%>"
+                                                    class="w-75"/>
+                                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                                                <h4><strong><%= item.itemName %></strong></h4>
+                                                <p class="card-text">Quantity: <%= item.itemQuantity %> </p>
+                                                <p class="act-price">
+                                                    <span>&#8377;</span><%=item.itemPrice %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <%if(order.orderStatus == "Delivered") {%>
+                                            <div class="col-md-3 ml-4">
+                                                <!-- <a href="/rateproduct?product=<%=item.itemId%>" class="btn btn-outline-info">Add Review</a> -->
+                                                <button class="btn btn-outline-info" onclick="addRating('<%=item.itemId%>', '<%=userId%>')">Add Review</button>
+                                            </div>                                          
+                                        <%}%>
+                                    <% }) %>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h6><b>Order ID:</b> <span id="orderId"><%=order.orderId%></span></h6>
+                                            <h6><b>Order Date:</b> <span id="orderDate"><%= order.dateOfPurchase %></span></h6>
+                                            <h6><b>Delivery Date:</b> <span id="deliveryDate"><%= order.dateOfDelivery %></span></h6>
+                                            <h6><b>Shipping Address:</b> 
+                                                <%=order.shippedTo[0].fullName%><br>
+                                                <%=order.shippedTo[0].mobile%><br>
+                                                <%=order.shippedTo[0].houseNumber%><br>
+                                                <%=order.shippedTo[0].area%><br>
+                                                <%=order.shippedTo[0].pinCode%><br>
+                                                <%=order.shippedTo[0].city%><br>
+                                                <%=order.shippedTo[0].state%><br>
+                                            </h6>
+                                            <!-- Product Table -->
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="productTable">
+                                                    <%order.purchaseItems.forEach((item) => { %>
+                                                        <tr>
+                                                            <td><%=item.itemName%></td>
+                                                            <td><%=item.itemQuantity%></td>
+                                                            <td><%=item.itemPrice%></td>
+                                                        </tr>
+                                                    <%})%>
+                                                </tbody>
+                                            </table>
+                            
+                                            <hr>
+                            
+                                            <h6>Total Amount: <span id="totalAmount"><%=order.totalAmount%></span></h6>
+                                            <h6>Order Status: <span id="orderStatusSummary"><%=order.orderStatus%></span></h6>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+
+<script>
+    function addRating(productId, userId, id) {
+        // console.log(productId);
+        // console.log(userId);
+        const url = '/ratingcheck?product='+productId
+        fetch(url)
+        .then(response => response.json())
+        .then((data) => {
+            // console.log(data.message);
+            if(data.message == 'exists') {
+                console.log('review exists');
+                swal("You have already reviewed this product..")
+                .then((value) => {
+                    window.location.href = '/orderhistory'
+                })
+            } else if(data.message == 'ok') {
+                // console.log('new review');
+                // fetch('/rateproduct?product='+productId)
+                window.location.href = '/rateproduct?product='+productId
+            }
+        })
+    }
+
+    function generateInvoice (orderId) {
+        const data = {
+            id: orderId
+        }
+        const url = '/purchaseinvoice'
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        } 
+        fetch(url, options)
+        .then (response => response.blob())
+        .then(blob => {
+            // Create a temporary URL for the blob
+            const blobUrl = URL.createObjectURL(blob);
+            window.open(blobUrl, '_blank');
+
+            // Release the object URL
+            URL.revokeObjectURL(blobUrl);
+        })
+        .catch (error => {
+            console.error('Error', error);
+        })
+    }
+
+</script>
+
+
+<%- include('userFooter') %>

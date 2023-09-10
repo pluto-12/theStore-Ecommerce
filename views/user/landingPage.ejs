@@ -1,0 +1,63 @@
+ <%- include('userHeader')%>
+
+ <link rel="stylesheet" href="/static/landingPage.css">
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner" style="height: 500px;">
+          <% banners.forEach((banner) => {%>
+            <div class="carousel-item active">
+                <img src="/assets/bannerImages/<%=banner.bannerLocation%>" class="d-block w-100" alt="...">
+            </div>
+          <%}) %>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <div class="row col-md-12">
+        <h5 class="text-center" style="margin-top:50px;">Browse By Categories</h5>
+        <div class="display-category p-5 d-flex justify-content-center">
+            <% categories.forEach((cat) => { %>
+                <div class="card m-3 text-center" style="width: 18rem;">
+                    <a href="/products?category=<%=cat.categoryName%>">
+                        <div class="card-container" >
+                            <img src="/assets/categoryImages/<%= cat.categoryImage %>" class="card-img-top" alt="...">
+                        </div>
+                        
+                        <div class="card-body text-center">
+                            <h5 class="card-title"><%= cat.categoryName %></h5>
+                        </div>
+                    </a>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <hr class="mx-n3"/>
+    <div class="row col-md-12">
+        <h5 class="text-center" style="margin-top: 50px;">Shop Products</h5>
+        <div class="display-products p-5 d-flex justify-content-center">
+        <!-- <div class="col-md-4 mb-4 d-flex"> -->
+            <% products.forEach((product) => { %>
+                <div class="card text-center" style="width: 18rem; margin: 15px;">
+                    <a href="/productdetails?id=<%=product._id %>">
+                        <div class="card-container" >
+                            <img class="card-img-top" src="/assets/productImages/<%=product.productImages[0] %>"  alt="......">
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-text"><%= product.productName%></h5>
+                        </div>
+                    </a>
+                </div>
+            <% }) %>
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="/products" class="btn btn-outline-info">View all..</a>
+        </div>
+    </div>
+    <hr class="mx-n3"/>
+      
+<%- include('userFooter')%>

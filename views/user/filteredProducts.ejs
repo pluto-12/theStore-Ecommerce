@@ -1,0 +1,80 @@
+<%- include('userHeader') %>
+
+<link rel="stylesheet" href="/static/shopProducts.css">
+
+
+
+<h5 class="text-dark mt-3" style="padding-left: 50px;font-weight: 700;font-size: 29px;">PRODUCTS</h5>
+<!-- <h3 class=" my-4"></h3> -->
+
+<hr class="mx-n3" style="margin-top: 50px;">
+
+
+<div class="container">
+    <div class="row">
+      <!-- Sidebar with categories -->
+      <div class="col-lg-3">
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-light">
+          <div class="position-sticky">
+            <div class="mt-4 mx-3">
+              <span><strong>Filter</strong></span>
+              <!-- Category Dropdown -->
+              <div class="mb-3">
+                <label for="categoryFilter" class="form-label">Category:</label>
+                <select class="form-select" id="categoryFilter">
+                  <option value="all">All Categories</option>
+                  <% categories.forEach((category) => { %>
+                  <option value="<%=category.categoryName%>"><%=category.categoryName%></option>
+                  <% }) %>
+                </select>
+              </div>
+              <!-- Sort Options -->
+              <div class="mb-3">
+                <label for="sortFilter" class="form-label">Sort By:</label>
+                <select class="form-select" id="sortFilter">
+                  <option value="descending">Price: High to Low</option>
+                  <option value="ascending">Price: Low to High</option>
+                </select>
+              </div>
+              <!-- Apply Filter Button -->
+              <button type="button" class="btn btn-primary" onclick="filter()" id="applyFilterBtn">Apply Filter</button>
+            </div>
+          </div>
+        </nav>
+      </div>
+  
+      <!-- Product cards -->
+      <div class="col-lg-9">
+        <div class="row">
+          <% products.forEach((product) => { %>
+          <div class="col-md-4 mb-4">
+            <a href="/productdetails?id=<%=product._id %>">
+                <div class="card">
+                    <img src="/assets/productImages/<%=product.productImages[0] %>" class="card-img-top" alt="<%= product.productName %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= product.productName %></h5>
+                        <p class="card-text"><span>&#8377;</span><%=product.productPrice%></p>
+                    </div>
+                </div>
+            </a>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pagination mb-3">
+    <% if(locals.totalPages) { %>
+      <% for (let i = 1; i <= totalPages ; i++) { %>
+        <a class="pagination-link" href="#" onclick="filter( <%=i%> )"> <%= i %> </a>
+      <% } %>
+    <%}%>
+    
+  </div>
+
+  
+  
+
+
+<%- include('userFooter') %>
+

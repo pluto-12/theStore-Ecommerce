@@ -1,0 +1,28 @@
+<%- include('userHeader') %>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="mt-4">Return Form</h2>
+            <form action="" method="post">
+                <input type="text" name="orderId" value="<%=orderId%>" hidden>
+                <div class="mb-3">
+                    <label for="reason" class="form-label">Reason for return:</label>
+                    <select class="form-select" id="reason" name="reason">
+                        <option value="faulty">Faulty product</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="notes" class="form-label">Additional notes:</label>
+                    <textarea class="form-control" id="notes" name="notes" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mb-3">Confirm Return</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('userFooter') %>
+
+   

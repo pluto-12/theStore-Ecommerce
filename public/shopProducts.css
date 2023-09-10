@@ -1,0 +1,39 @@
+.display_category {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px;
+}
+
+.hovereffect:hover {
+    width: 90%;
+    height: 60%;
+}
+
+/* Add this CSS to your stylesheet or in a <style> tag in your HTML */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-link {
+    padding: 8px 12px;
+    margin: 0 4px;
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  }
+  
+  .pagination-link:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .pagination-link.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+  }
+  

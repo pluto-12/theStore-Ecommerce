@@ -1,0 +1,46 @@
+<%- include('userHeader') %>
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form method="post" action="/updateaddress">
+                <h4 class="mb-4">Edit Address</h4>
+                <div class="form-group mb-4">
+                    <input type="text" name="addressId" class="form-control" id="addressId" placeholder="Enter your full name" value="<%=addressDetails[0]._id %>" hidden>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" name="fullName" class="form-control" id="fullName" placeholder="Enter your full name" value="<%=addressDetails[0].fullName %>" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" class="form-control" name="mobile" id="mobile" placeholder="Enter your mobile number" value="<%=addressDetails[0].mobile %>" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="houseNumber">House Number</label>
+                    <input type="text" class="form-control" name="houseNumber" id="houseNumber" placeholder="Enter your house number" value="<%=addressDetails[0].houseNumber %>" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="area">Area</label>
+                    <input type="text" class="form-control" name="area" id="area" placeholder="Enter your area" value="<%=addressDetails[0].area %>" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="pincode">Pincode</label>
+                    <input type="text" class="form-control" name="pinCode" id="pincode" placeholder="Enter your pincode" value="<%=addressDetails[0].pinCode %>" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" name="city" id="city" placeholder="Enter your city" value="<%=addressDetails[0].city %>" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="state">State</label>
+                    <input type="text" class="form-control" name="state" id="state" placeholder="Enter your state" value="<%=addressDetails[0].state %>" required>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<%- include('userFooter') %>

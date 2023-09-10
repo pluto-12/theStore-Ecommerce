@@ -1,0 +1,70 @@
+<%- include('adminHeader')%>
+
+<div class="d-flex" style=" width: 80%; margin-left: 25px; justify-content: space-between;">
+    <h3 class="mb-5 mt-5"> All users</h3>
+    <!-- <a class="btn btn-outline-primary my-3 ml-5" style="height: 40px; width: 200px; margin-top: 45px;" href="/admin/adduser" >Add New User</a> -->
+</div>
+
+  <% if (locals.message) { %>
+    <div class="alert alert-danger">
+      <strong><%= message %> </strong>
+    </div>
+  <% } %> 
+  
+  <!-- <li class="nav-item"> -->
+    <!-- <a class="navbar-brand" href="/admin/dashboard">Dashboard</a> -->
+    <!-- <div class="d-flex">
+    <form action="/admin/search" method="get" class="d-flex ms-2 me-2" role="search" >
+        <input class="form-control me-2" type="search" placeholder="Search User" id="search" name="search">
+        <button class="btn btn-outline-primary" type="submit" value="Search">Search</button>
+    </form> 
+    <span class="font-weight-bold ml-3"> Create a New User here</span>
+    <a class="btn btn-outline-primary my-3 ml-5" href="/admin/adduser" >Add User</a>
+  </div> -->
+  
+  <!-- </li> -->
+  <div class="d-flex justify-content-center" id="navbarNav">
+    <form class="input-group" style="max-width: 500px; margin-right: 30px;">
+      <input
+        type="search"
+        class="form-control rounded"
+        placeholder="Search"
+        aria-label="Search"
+        aria-describedby="search-addon"
+      />
+      <span class="input-group-text border-0" id="search-addon">
+        <span class="material-icons">search</span>
+      </span>
+    </form>
+    <a href="#" class="btn btn-secondary ml-2">Add New User</a>
+  </div>
+  <div class="row" style="margin: 20px;">
+    <div class="col-md-12">
+        <table class="table table-success table-stripped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach((person) => { %>
+                    <tr>
+                        <td><%= person.userName %></td>
+                        <td><%= person.userEmail %></td>
+                        <td><%= person.userContact %></td>
+                        <% if(person.isBlocked) { %>
+                            <td><a class="btn btn-outline-success" href="/admin/block?name=<%= person.userName %>">Unblock</a></td>
+                        <% } else  { %>
+                            <td><a class="btn btn-outline-danger" href="/admin/block?name=<%= person.userName %>">Block</a></td>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+  </div>
+  
+  

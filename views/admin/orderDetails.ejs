@@ -1,0 +1,75 @@
+<%- include('adminHeader') %>
+
+<section class="h-100">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center my-4">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h5 class=""><%=order[0]._id%></h5>
+                    </div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p>Order Placed On:</p>
+                                <p><%= order[0].dateOfPurchase %></p>
+                            </div>
+                            <div class="col-md-3">
+                                <p>Delivery Date:</p>
+                                <p><%= order[0].dateOfDelivery %></p>
+                            </div>
+                            <div class="col-md-2">
+                                <p>Price:</p>
+                                <p><span>&#8377;</span><%= order[0].totalAmount %></p>
+                            </div>
+                            <div class="col-md-2">
+                                <p>Shipping Address:</p>
+                                <p>
+                                    <%=order[0].shippedTo[0].fullName%><br>
+                                    <%=order[0].shippedTo[0].mobile%><br>
+                                    <%=order[0].shippedTo[0].houseNumber%><br>
+                                    <%=order[0].shippedTo[0].area%><br>
+                                    <%=order[0].shippedTo[0].city%>  <%=order[0].shippedTo[0].state%><br>
+                                    <%=order[0].shippedTo[0].pinCode%><br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <% order[0].purchaseItems.forEach((item) => { %>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                                    <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                                        <img src="/assets/productImages/<%=item.itemImage%>"
+                                        class="w-75"/>
+                                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                                    <h4><strong><%= item.itemName %></strong></h4>
+                                    <p class="card-text">Quantity: <%= item.itemQuantity %> </p>
+                                    <p class="act-price">
+                                        <span>&#8377;</span><%=item.itemPrice %>
+                                    </p>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                    <div class="card-footer">
+                        <form action="/admin/updatestatus" class="d-flex align-items-center" method="post">
+                            <input type="text" name="orderId" id="" value="<%=order[0]._id%>" hidden>
+                            <label for="status" class="mr-2 mb-0">Status:</label>
+                            <select name="status" id="status" class="form-control m-2">
+                                <option value="Placed"><%=order[0].orderStatus%></option>
+                                <option value="Placed">Placed</option>
+                                <option value="In transit">In transit</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

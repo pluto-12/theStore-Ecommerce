@@ -1,0 +1,43 @@
+<%- include('userHeader') %>
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form method="post" action="/addaddress">
+                <h4 class="mb-4">Add New Address</h4>
+                <div class="form-group mb-4">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" name="fullName" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" class="form-control" name="mobile" id="mobile" placeholder="Enter your mobile number" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="houseNumber">House Number</label>
+                    <input type="text" class="form-control" name="houseNumber" id="houseNumber" placeholder="Enter your house number" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="area">Area</label>
+                    <input type="text" class="form-control" name="area" id="area" placeholder="Enter your area" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="pincode">Pincode</label>
+                    <input type="text" class="form-control" name="pinCode" id="pincode" placeholder="Enter your pincode" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" name="city" id="city" placeholder="Enter your city" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="state">State</label>
+                    <input type="text" class="form-control" name="state" id="state" placeholder="Enter your state" required>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Add</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<%- include('userFooter') %>

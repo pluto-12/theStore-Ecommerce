@@ -1,0 +1,90 @@
+<%- include('adminHeader') %>
+
+<section style="background-color: #f8f9fa">
+    <div class="container">
+      <div
+        class="row d-flex justify-content-center align-items-center h-100"
+        style="margin-top: 25px"
+      >
+        <div class="col-xl-9">
+          <h1 class="text mb-4">Add New Coupon</h1>
+          <div class="card" style="border-radius: 15px">
+            <% if (locals.message) { %>
+            <div class="alert alert-danger">
+              <strong><%= message %> </strong>
+            </div>
+            <% } %>
+            <form
+              action="/admin/newcoupon"
+              method="post"
+            >
+              <div class="card-body">
+                <!-- <hr class="mx-n3"> -->
+                <div class="row align-items-center py-3">
+                  <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">Coupon Name</h6>
+                  </div>
+                  <div class="col-md-9 pe-5">
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      name="couponName"
+                    />
+                  </div>
+                </div>
+                <hr class="mx-n3" />
+                <div class="row align-items-center py-3">
+                    <div class="col-md-3 ps-5">
+                      <h6 class="mb-0">Coupon Description</h6>
+                    </div>
+                    <div class="col-md-9 pe-5">
+                      <input
+                        type="text"
+                        class="form-control form-control-lg"
+                        name="couponDescription"
+                      />
+                    </div>
+                </div>
+                <hr class="mx-n3" />
+                <div class="row align-items-center py-3">
+                    <div class="col-md-3 ps-5">
+                      <h6 class="mb-0">Coupon Minimum Amount</h6>
+                    </div>
+                    <div class="col-md-9 pe-5">
+                      <input
+                        type="text"
+                        class="form-control form-control-lg"
+                        name="couponMinAmount"
+                      />
+                    </div>
+                </div>
+                <hr class="mx-n3" />
+                <div class="row align-items-center py-3">
+                    <div class="col-md-3 ps-5">
+                      <h6 class="mb-0">Coupon Discount</h6>
+                    </div>
+                    <div class="col-md-9 pe-5">
+                      <input
+                        type="text"
+                        class="form-control form-control-lg"
+                        name="couponDiscount"
+                      />
+                    </div>
+                </div>
+                <hr class="mx-n3" />
+                <div class="px-5 py-4 text-center">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <a
+                    class="btn btn-outline-primary"
+                    href="/admin/couponmanagement"
+                    >Back</a
+                  >
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+  

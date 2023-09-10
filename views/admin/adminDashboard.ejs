@@ -1,0 +1,448 @@
+<%- include('adminHeader') %> 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker@3/daterangepicker.css">
+
+<style>
+    /* Custom styles */
+    .dashboard {
+        background-color: #f5f5f5; /* Grey background color */
+        padding: 20px;
+    }
+
+    .card-overview {
+        transition: transform 0.2s; /* Adding a smooth transition */
+    }
+
+    .card-overview:hover {
+        transform: scale(1.05); /* Hover effect to slightly enlarge the card */
+    }
+</style>
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Overview</h2> <!-- Overview header -->
+    <div class="row dashboard mb-4">
+        <!-- Filtering options -->
+        <div class="row">
+           <!-- Total Sales Card -->
+            <div class="col-md-3">
+                <div class="card card-overview">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Total Orders</h5>
+                        <p class="card-text text-center"><%= orderCount[0].count %></p>
+                    </div>
+                </div>
+            </div>
+            <!-- Total Sales Card -->
+            <div class="col-md-3">
+                <div class="card card-overview">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Total Revenue</h5>
+                        <p class="card-text text-center"><span>&#8377;</span> <%= totalRevenue[0].totalAmountSum %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Products Card -->
+            <div class="col-md-3">
+                <div class="card card-overview">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Total Products</h5>
+                        <p class="card-text text-center"><%= productCount[0].count %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Users Card -->
+            <div class="col-md-3">
+                <div class="card card-overview">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Total Users</h5>
+                        <p class="card-text text-center"><%= userCount[0].count %></p>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Orders Overview</h2>
+    <div class="row dashboard mb-4">
+        <!-- Filtering options -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="form-group">
+                    <label for="filterSelect">Filter By:</label>
+                    <select class="form-control" id="filterSelect">
+                        <option value="all">All</option>
+                        <option value="day">Day</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div id="filterOptions">
+                    <!-- Dynamic content will be inserted here based on the selected filter -->
+                </div>
+            </div>
+            <!-- Apply Filter Button -->
+            <div class="text-center mb-4">
+                <button id="applyFilterBtn" class="btn btn-primary">Apply Filter</button>
+            </div>
+            <div class="card mb-3">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <!-- <img src="..." class="img-fluid rounded-start" alt="..."> -->
+                    <canvas id="orderDeliveryChart" width="400" height="400"></canvas>
+                  </div>
+                  <div class="col-md-8 ml-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Order Delievry Status</h5>
+                        <% if(locals.allOrder) {%>
+                            <% allOrder.forEach((order) => { %>
+                                <p class="card-text text-center"><%=order._id%> : <%= order.count%></p>
+                            <%}) %>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                More Details
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="staticBackdropLabel">Order Delivery Details</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-success table-stripped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <td scope="col">Order ID</td>
+                                                        <td scope="col">Purchase Email</td>
+                                                        <td scope="col">Purchase Amount</td>
+                                                        <td scope="col">Date of Delivery</td>
+                                                        <td scope="col">Order Status</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% orders.forEach((order) => { %>
+                                                        <tr>
+                                                            <td><%= order.orderId %></td>
+                                                            <td><%= order.purchaseEmail %></td>
+                                                            <td><%= order.totalAmount%></td>
+                                                            <td><%= order.dateOfDelivery %></td>
+                                                            <td><%= order.orderStatus%></td>
+                                                        </tr>
+                                                    <%})%>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="button" class="btn btn-primary" onclick="exportPdf('delivery')">Export</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        <%} else {%>
+                            <p class="card-text text-center">No Orders</p>
+                        <%}%>
+                    </div>                  
+                  </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <canvas id="paymentChart" width="400" height="400"></canvas>
+                  </div>
+                  <div class="col-md-8 ml-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Order Payment Stats</h5>
+                        <% if(locals.paymentType) {%>
+                            <% paymentType.forEach((payment) => { %>
+                                <p class="card-text text-center"><%=payment._id%> : <%= payment.count%></p>
+                            <%}) %>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentMethod">
+                                More Details
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="paymentMethod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="staticBackdropLabel">Payment Details</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-success table-stripped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <td scope="col">Order ID</td>
+                                                        <td scope="col">Purchase Email</td>
+                                                        <td scope="col">Purchase Amount</td>
+                                                        <td scope="col">Payment Method</td>
+                                                        <td scope="col">Order Status</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% orders.forEach((order) => { %>
+                                                        <tr>
+                                                            <td><%= order.orderId %></td>
+                                                            <td><%= order.purchaseEmail %></td>
+                                                            <td><%= order.totalAmount%></td>
+                                                            <td><%= order.paymentMethod %></td>
+                                                            <td><%= order.orderStatus%></td>
+                                                        </tr>
+                                                    <%})%>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="button" class="btn btn-primary" onclick="exportPdf('payment')">Export</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        <%} else {%>
+                            <p class="card-text text-center">No Orders</p>
+                        <%}%>
+                    </div>                  
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link to Bootstrap JS (Optional, for responsive features) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker@3/daterangepicker.min.js"></script>
+<script id="orders-data" type="application/json"><%- JSON.stringify(orders) %></script>
+<script id="payment-data" type="application/json"><%- JSON.stringify(paymentType) %></script>
+<script id="all-orders" type="application/json"><%- JSON.stringify(allOrder) %></script>
+<script>
+
+    let allorderScript = document.getElementById('all-orders')
+    let allorderEjs = JSON.parse(allorderScript.textContent)
+    let paymentScript = document.getElementById('payment-data')
+    let paymentEjs = JSON.parse(paymentScript.textContent)
+    // console.log(allorderEjs);
+
+    function exportPdf(key) {
+        
+        const script = document.getElementById('orders-data');
+        const ejsVariable = JSON.parse(script.textContent);
+        const url = '/admin/generatepdf?key='+key
+        // console.log(ejsVariable);
+        fetch(url, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(ejsVariable)
+        })
+        .then (response => response.blob())
+        .then(blob => {
+            // Create a temporary URL for the blob
+            const blobUrl = URL.createObjectURL(blob);
+
+            // // Create a link to trigger the download
+            // const link = document.createElement('a');
+            // link.href = blobUrl;
+            // link.download = 'Report.pdf';
+            // link.click();
+            window.open(blobUrl, '_blank');
+
+            // Release the object URL
+            URL.revokeObjectURL(blobUrl);
+        })
+        .catch (error => {
+            console.error('Error', error);
+        })
+    }
+
+
+    var orderStatusArray = []
+    var values = []
+
+
+    allorderEjs.forEach ((order) => {
+        orderStatusArray.push(order._id)
+        values.push(order.count)
+    })
+    
+
+    var paymentStatusArray = []
+    var paymentValues = []
+    paymentEjs.forEach ((payment) => {
+        paymentStatusArray.push(payment._id)
+        paymentValues.push(payment.count)
+    })
+
+    function createChart(ctx, data, options) {
+        return new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    }
+    var orderStatusCtx = document.getElementById('orderDeliveryChart').getContext('2d');
+    var orderStatusData = {
+        labels: orderStatusArray,
+        datasets: [{
+            data: values,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+            ],
+            borderWidth: 1
+        }]
+    }
+    var orderStatusOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 1,
+                    callback: function(value, index, values) {
+                        return Math.floor(value); // Modify this function to format the tick values as needed
+                    }
+                }
+            }]
+        }
+    }
+
+    var orderStatusChart = createChart(orderStatusCtx, orderStatusData, orderStatusOptions)
+
+    var paymentStatusCtx = document.getElementById('paymentChart').getContext('2d')
+    var paymentStatusData = {
+        labels: paymentStatusArray,
+        datasets: [{
+            data: paymentValues,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+            ],
+            borderWidth: 1
+        }]
+    }
+    var paymentStatusOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 1,
+                    callback: function(value, index, paymentValues) {
+                        return Math.floor(value); // Modify this function to format the tick values as needed
+                    }
+                }
+            }]
+        }
+    }
+    var paymentStatusChart = createChart(paymentStatusCtx, paymentStatusData, paymentStatusOptions)
+    
+
+    
+    document.getElementById("filterSelect").addEventListener("change", function() {
+        var selectedFilter = this.value;
+        var filterOptionsHTML = "";
+
+        if (selectedFilter === "day") {
+            filterOptionsHTML = `
+                <div class="form-group">
+                    <label for="dateSelect">Select Date:</label>
+                    <input type="date" class="form-control" id="dateSelect" />
+                </div>
+            `;
+        } else if (selectedFilter === "monthly") {
+            filterOptionsHTML = `
+                <div class="form-group">
+                    <label for="monthSelect">Select Month:</label>
+                    <select class="form-control" id="monthSelect">
+                        <option value="2023-01-01">January 2023</option>
+                        <option value="2023-02-01">February 2023</option>
+                        <option value="2023-03-01">March 2023</option>
+                        <option value="2023-04-01">April 2023</option>
+                        <option value="2023-05-01">May 2023</option>
+                        <option value="2023-06-01">June 2023</option>
+                        <option value="2023-07-01">July 2023</option>
+                        <option value="2023-08-01">August 2023</option>
+                        <option value="2023-09-01">September 2023</option>
+                        <option value="2023-10-01">October 2023</option>
+                        <option value="2023-11-01">November 2023</option>
+                        <option value="2023-12-01">December 2023</option>
+                        <!-- Add more month options as needed -->
+                    </select>
+                </div>
+            `;
+        } else if (selectedFilter === "yearly") {
+            filterOptionsHTML = `
+                <div class="form-group">
+                    <label for="yearSelect">Select Year:</label>
+                    <select class="form-control" id="yearSelect">
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <!-- Add more year options as needed -->
+                    </select>
+                </div>
+            `;
+        }
+
+        document.getElementById("filterOptions").innerHTML = filterOptionsHTML;
+    });
+
+    // Apply Filter Button Click Event
+    document.getElementById("applyFilterBtn").addEventListener("click", function() {
+        // Get the selected filter and filter options values
+        var selectedFilter = document.getElementById("filterSelect").value;
+        var selectedFilterOption = "";
+
+        if (selectedFilter === "day") {
+            selectedFilterOption = document.getElementById("dateSelect").value;
+            var url = '/admin?selectedFilter=' + selectedFilter + '&selectedFilterOption=' + selectedFilterOption;
+            window.location.href = url;
+        } else if (selectedFilter === "monthly") {
+            selectedFilterOption = document.getElementById("monthSelect").value;
+            var url = '/admin?selectedFilter=' + selectedFilter + '&selectedFilterOption=' + selectedFilterOption;
+            window.location.href = url;
+        } else if (selectedFilter === "yearly") {
+            selectedFilterOption = document.getElementById("yearSelect").value;
+            var url = '/admin?selectedFilter=' + selectedFilter + '&selectedFilterOption=' + selectedFilterOption;
+            window.location.href = url;
+        }
+        
+    });
+
+
+
+    
+</script>
+

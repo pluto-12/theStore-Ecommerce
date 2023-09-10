@@ -1,0 +1,37 @@
+<%- include('userHeader') %>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .error-container {
+        text-align: center;
+        margin-top: 100px;
+    }
+
+    .error-code {
+        font-size: 100px;
+        color: #dc3545;
+    }
+
+    .error-message {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+
+    .back-home {
+        margin-top: 30px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 error-container">
+            <span class="error-code">Something Went Wrong.</span>
+            <p class="error-message">Please try again after some time...</p>
+            <p class="back-home"><a href="/admin">Back to Home</a></p>
+        </div>
+    </div>
+</div>
+
+<%- include('userFooter')%>
