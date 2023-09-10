@@ -8,6 +8,7 @@ const userMiddleware = require('../middleware/user/userAuth')
 const couponController = require('../controller/user/couponController')
 const errorController = require('../controller/user/errorController')
 const { v4: uuid4} = require('uuid')
+const mongoSanitizer = require('mongo-sanitize')
 
 userRouter.set('view engine', 'ejs')
 userRouter.set('views', './views/user')

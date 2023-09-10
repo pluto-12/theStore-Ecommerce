@@ -761,8 +761,7 @@ const deleteOrder = async (req, res) => {
 const loadOrders = async (req, res) => {
     try {
         const categoryList = await categoryCollection.find({})
-        const orders = await orderCollection.find({purchaseEmail: req.session.userEmail, orderStatus: { $in: ['Delivered', 'Returned', 'Cancelled']}})
-        // console.log(orders[0].purchaseItems.length);   
+        const orders = await orderCollection.find({purchaseEmail: req.session.userEmail, orderStatus: { $in: ['Delivered', 'Returned', 'Cancelled']}})  
         res.render('orderHistory', {user: req.session.user, categories: categoryList, activeOrders: orders, userId: req.session.userId})
     }
     catch (err) {

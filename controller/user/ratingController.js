@@ -5,6 +5,8 @@ const categoryCollection = require('../../model/categoryModel')
 
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId
+const mongoSanitizer = require('mongo-sanitize')
+
 
 
 
@@ -34,8 +36,9 @@ const validateRating = async (req, res) => {
 }
 
 const loadRating = async (req, res) => {
-    try{ 
-        const product = await productCollection.find({_id: new ObjectId(req.query.product)})
+    try{
+        const productId = mongoSanitizer(req.query.product)
+        const product = await productCollection.find({_id: new ObjectId(productId)})
         const categoryList = await categoryCollection.find({})
         res.render('productReview', {categories: categoryList, product, user: req.session.user})
     }
