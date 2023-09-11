@@ -2,10 +2,12 @@ require('dotenv').config()
 const express = require ('express')
 const app = express()
 const path = require('path')
+const helmet = require('helmet')
 
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/storeApp')
+// mongoose.connect('mongodb://127.0.0.1:27017/storeApp')
+    mongoose.connect('mongodb+srv://sarathpradeep12:AQgJ0rrFiEJtmqEb@cluster0.a2oy13j.mongodb.net/?retryWrites=true&w=majority')
     .then(() => {
         console.log("database connected");
     })
@@ -18,6 +20,13 @@ app.use(express.urlencoded({extended: true}))
 
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')))
 app.use('/static',  express.static(path.join(__dirname, 'public')))
+
+// app.use(helmet.contentSecurityPolicy({
+//     directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'"],
+//     }
+// }))
 
 
 const userRoute = require('./router/userRoutes') 

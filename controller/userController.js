@@ -122,9 +122,9 @@ const loadOTP = (req, res) => {
 }
 
 const verifyotp = async (req, res) => {
-    console.log(optNumber); 
-    console.log(req.body.userOtp);
-    console.log(req.session.contact);
+    // console.log(optNumber); 
+    // console.log(req.body.userOtp);
+    // console.log(req.session.contact);
     if(optNumber == req.body.userOtp) {
         if(req.session.user) {
             await userCollection.updateOne({userContact: req.session.contact}, {$set: {isContactVerified: true}})
