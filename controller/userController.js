@@ -133,7 +133,7 @@ const verifyotp = async (req, res) => {
             res.render('newPassword')
         }
     } else {
-        res.render('otpPage', {errorMessage: "Invalid OTP"})
+        res.render('otpPage', {errorMessage: "Invalid OTP", number: req.session.contact})
     }
 }
 
