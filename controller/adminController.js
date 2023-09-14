@@ -339,6 +339,7 @@ const addNewCategory = async (req, res) => {
         if (list.length) {
             res.redirect('/admin/newcategory?message=category%20exists')
         } else {
+            // console.log(req.body);
             const newcat = {
                 categoryName: req.body.categoryName,
                 categoryDescription: req.body.categoryDescription,

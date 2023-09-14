@@ -7,7 +7,7 @@ const helmet = require('helmet')
 
 const mongoose = require('mongoose')
 // mongoose.connect('mongodb://127.0.0.1:27017/storeApp')
-    mongoose.connect('mongodb+srv://sarathpradeep12:AQgJ0rrFiEJtmqEb@cluster0.a2oy13j.mongodb.net/?retryWrites=true&w=majority')
+    mongoose.connect(process.env.dbConnectionString)
     .then(() => {
         console.log("database connected");
     })
