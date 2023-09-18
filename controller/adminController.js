@@ -545,7 +545,7 @@ const adminLogout = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
     try {
-        const orders = await orderCollection.find({})
+        const orders = await orderCollection.find({}).sort({dateOfPurchase: -1})
         res.render('orderPage', {orders})
     }
     catch (err) {
